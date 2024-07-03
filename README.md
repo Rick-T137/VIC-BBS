@@ -1,6 +1,6 @@
-![VIC-BBS-menu](https://github.com/Rick-T137/vic-bbs/assets/13721643/f542e143-8953-4c09-855c-08737b08f8e7)
-
 # VIC-20 Bulletin Board System  
+
+![VIC-BBS-menu](https://github.com/Rick-T137/vic-bbs/assets/13721643/f542e143-8953-4c09-855c-08737b08f8e7)
 
 This is a bulletin board system (BBS) that runs on a Commodore VIC-20 personal computer. In addition to the VIC, you'll need:
 - at least 16KB of memory expansion (35KB expansion is optimal)
