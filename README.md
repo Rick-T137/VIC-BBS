@@ -1,5 +1,5 @@
 # VIC-BBS
-![VIC-BBS-load](https://github.com/Rick-T137/vic-bbs/assets/13721643/4cb31827-5cbc-49d5-9411-a2c68134e454)
+![VIC-BBS-menu](https://github.com/Rick-T137/vic-bbs/assets/13721643/f542e143-8953-4c09-855c-08737b08f8e7)
 
 VIC-20 Bulletin Board System  
 
