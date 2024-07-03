@@ -49,3 +49,9 @@ You need to create/edit the following SEQ files:
 - BULLETINS : Listing of available bulletins on the system (numbered 1 to 255)
 - SETMENU : Help Menu for the User Settings area
 - SYSHELP : Help page for using the system
+
+## Real VIC-20 vs VICE: Differences
+The way the BBS answers calls is very simple. The "modem" is programmed to answer after one ring (ats0=1) and all the BBS does is monitor the user port (address 37136) for a carrier tone. On a physical VIC-20, that shows up on bit #4 (ie: AND 8 in BASIC or AND #$08 in ML) whereas in VICE it shows up on bit #5 (ie: AND 16 in BASIC or AND #$10 in ML). Here are the spots in the code is it referenced:
+- BBS.ML : at address $0550 and $0552, there is AND #$08 and CMP #$08. That works for the physical VIC. In VICE that is changed to AND #$10 and CMP #$10.
+- BBS : line 115 is doing and8 for a real VIC and and16 for VICE
+Otherwise, the two images are the same.
