@@ -1,10 +1,6 @@
 # VIC-BBS
 VIC-20 Bulletin Board System
 
-Back in 1983, I got my first computer - a VIC-20. I built a simple BBS program for it and ran it initially on my VIC-1600 VICModem. I had to answer each call manually! Quickly I got a 1650 modem that would auto-answer. I ran that BBS (called the Live Wire BBS) for many years before eventually moving on to running a Commodore 64 BBS (Theatre of Pain BBS) and then in the early 90's, a PC-based BBS (The Danger Zone BBS). I lost the original VIC-BBS diskettes and I've always wanted to re-do it.
-
-Fast forward 40+ years, and I have that opportunity. WiFi modems, memory expanders and SD card readers are all now available for the VIC-20 (and C64/C128) which makes building and running a BBS much easier. This program is the result of about 2 weeks of hard work, preceded by a few years of pondering and experimenting with code.
-
 ## Quick Start
 - Download the latest appropriate D64 image from this repo (BBS.d64 is for a physical VIC-20, BBS-VICE.d64 is for a VICE-emulated VIC-20)
 - If using emulation, load the D64 image in VICE, configure VICE's RS232 parameters, and ensure tcpser is running with the correct parameters.
