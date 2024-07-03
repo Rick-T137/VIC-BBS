@@ -55,3 +55,6 @@ The way the BBS answers calls is very simple. The "modem" is programmed to answe
 - BBS.ML : at address $0550 and $0552, there is AND #$08 and CMP #$08. That works for the physical VIC. In VICE that is changed to AND #$10 and CMP #$10.
 - BBS : line 115 is doing and8 for a real VIC and and16 for VICE
 Otherwise, the two images are the same.
+
+## Real Time Clock
+The VIC has no way of knowing what the current date is, and it's time keeping ability is hampered by the fact that the internal timer pauses whenver the disk is accessed. This makes using an external real time clock (RTC) chip required to run the BBS effectively. In the BBS BASIC program, there are two subroutines at lines 3400 (get Date) and 3450 (get Time). You will likely need to modify those two subroutines to work with whatever RTC solution you have chosen. In VICE, a DS12C887 is emulated and the BBS-VICE.d64 image contains the code for working with that RTC. My physical VIC uses a custom board made by JaystoniansRetroShop on Etsy that includes a DS12885T RTC chip and 37KB of expansion RAM. So my code at 3400 and 3450 reflects how that chip works. 
