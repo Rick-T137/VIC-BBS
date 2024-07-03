@@ -1,4 +1,6 @@
 # VIC-BBS
+![VIC-BBS-load](https://github.com/Rick-T137/vic-bbs/assets/13721643/4cb31827-5cbc-49d5-9411-a2c68134e454)
+
 VIC-20 Bulletin Board System  
 
 This is a bulletin board system (BBS) that runs on a Commodore VIC-20 personal computer. In addition to the VIC, you'll need:
