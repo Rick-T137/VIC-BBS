@@ -1,5 +1,10 @@
 # VIC-BBS
-VIC-20 Bulletin Board System
+VIC-20 Bulletin Board System  
+
+This is a bulletin board system (BBS) that runs on a Commodore VIC-20 personal computer. In addition to the VIC, you'll need:
+- at least 16KB of memory expansion (37KB is optimal)
+- a WiFi modem such as Strikelink (or some other method to connect ie: null modem to tcpser server)
+- storage device (ie: 1541 disk drive, SD2IEC drive or pi1541 drive)
 
 ## Quick Start
 - Download the latest appropriate D64 image from this repo (BBS.d64 is for a physical VIC-20, BBS-VICE.d64 is for a VICE-emulated VIC-20)
