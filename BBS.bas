@@ -217,7 +217,9 @@
  1699 return
  1700 rem * show time*
  1710 gosub3450
- 1720 x=tu-tm:x=x/60
+ 1720 ifad=1thenx=tu-(tm-86400)
+ 1721 ifad=0thenx=tu-tm
+ 1722 x=x/60
  1725 x1=x-int(x):x1=int(x1*60):z1$=str$(x1):z1$=right$(z1$,len(z1$)-1)
  1730 x=int(x):z$=str$(x):z$=right$(z$,len(z$)-1)
  1735 iflen(z1$)=1thenz1$="0"+z1$
@@ -329,7 +331,7 @@
  3380 a(3)=1335
  3385 a(4)=1452
  3390 sd=0:rs=37136:cr$=chr$(13):iz=0:cd=0:mc=20:ma=0:rt=38912:qr=40960
- 3391 dim tl(6):tl(1)=20:tl(2)=30:tl(3)=60:tl(4)=60:tl(5)=90:tl(6)=90:em=0
+ 3391 dim tl(6):tl(1)=20:tl(2)=30:tl(3)=60:tl(4)=60:tl(5)=90:tl(6)=90:em=0:ad=0
  3399 return
  3400 rem * get date *
  3410 pokert,8:v=peek(rt+1):gosub3490:v$=str$(v):da$=right$(v$,len(v$)-1)+"/"
@@ -340,7 +342,7 @@
  3455 pokert,4:v=peek(rt+1):gosub3490:tm=v*3600
  3460 pokert,2:v=peek(rt+1):gosub3490:tm=tm+v*60
  3465 pokert,0:v=peek(rt+1):gosub3490:tm=tm+v
- 3470 iftu<tmthenad=0
+ 3470 iftu>tmthenad=0
  3489 return
  3490 rem * rtc conv *
  3495 v=int(v/16)*10+(v-16*int(v/16))
