@@ -152,8 +152,8 @@
  1310 o$="{yel}Handle?"+cr$+">{wht}":sysa(1):mc=12:gosub400:gosub1600:un$=i$:ifcd=0then1399
  1311 ifun$=""then1310
  1312 o$=cr$+"Checking..."+cr$:sysa(1)
- 1315 open15,8,15:open1,8,2,"users,l,"+chr$(64):y=1:vu=1
- 1317 print#15,"p"+chr$(98)+chr$(y)+chr$(0)+chr$(1):gosub500:i$=left$(rc$,12)
+ 1315 open15,8,15:open1,8,2,"users,l,"+chr$(76):y=1:vu=1
+ 1317 print#15,"p"+chr$(98)+chr$(y)+chr$(0)+chr$(1):input#1,rc$:i$=left$(rc$,12)
  1318 gosub1600:ifi$=un$theno$=cr$+"{red}Handle aleady taken!{wht}"+cr$+cr$:sysa(1):goto1305
  1319 ifleft$(rc$,1)<>chr$(255)thenvu=vu+1:ifvu>nuthen1325
  1320 o$=".":sysa(1):y=y+1:ify<255then1317
@@ -210,10 +210,13 @@
  1605 fork=len(i$)to1step-1:x$=mid$(i$,k,1)
  1607 ifasc(x$)=32andtr=0andlen(i$)>1theni$=left$(i$,len(i$)-1)
  1608 ifasc(x$)<>32thentr=1
+ 1609 ifx$=","thenx$="-":gosub1660
  1610 ifasc(x$)>64andasc(x$)<91thengosub1650
  1620 next k:goto1699
  1650 x$=chr$(asc(x$)+128):i$=left$(i$,k-1)+x$+right$(i$,len(i$)-k)
  1655 return
+ 1660 i$=left$(i$,k-1)+x$+right$(i$,len(i$)-k)
+ 1669 return
  1699 return
  1700 rem * show time*
  1710 gosub3450
