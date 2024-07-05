@@ -73,16 +73,26 @@
   380 gosub 1800
   399 return
   400 rem * main i/o  *
-  401 i$=""
+  401 i$="":iflen(fu$)>0theni$=fu$:fu$="":o$=cr$+i$:sysa(1)
   405 sysa(3):x=peek(780):ifx>0thena$=chr$(x)
   410 ifx=13theno$=cr$:sysa(1):goto499
   411 ifx=20thengosub1500:goto405
   412 ifx=255thencd=0:goto499
-  415 iflen(i$)=mcthen405
+  415 iflen(i$)=mcandww=0then405
   420 i$=i$+a$
   425 ifma=1theno$="*"
   430 ifma=0theno$=a$
-  435 sysa(1):goto405
+  435 sysa(1)
+  436 iflen(i$)>=mcandww=1then440
+  439 goto405
+  440 rem * word wrap
+  445 j=len(i$):ifj=0then499
+  447 a$=mid$(i$,j,1):ifa$=" "andj<len(i$)then490
+  450 fu$=a$+fu$:o$=chr$(20):sysa(1)
+  453 iflen(fu$)>13theno$=fu$+cr$:sysa(1):fu$="":goto499
+  455 j=j-1:ifj=0then499
+  460 goto 447
+  490 i$=left$(i$,len(i$)-len(fu$))
   499 return
   500 rem * get rc$   *
   510 rc$=""
@@ -161,7 +171,7 @@
  1330 o$=cr$+"{yel}Password?"+cr$+">{wht}":sysa(1):mc=10:gosub400:gosub1600:pw$=i$:ifcd=0then1399
  1331 o$=cr$+"{yel}Real name?"+cr$+">{wht}":sysa(1):mc=20:gosub400:rn$=i$:ifcd=0then1399
  1332 o$=cr$+"{yel}From?"+cr$+">{wht}":sysa(1):mc=15:gosub400:fr$=i$:ifcd=0then1399
- 1335 ifun$=""orpw$=""orrn$=""orfr$=""theno$=cr$+"Fill in all fields!"+cr$:goto1300
+ 1335 ifun$=""orpw$=""orrn$=""orfr$=""theno$=cr$+"Missing fields!"+cr$:sysa(1):goto1300
  1340 o$="{clr}{yel}You entered..."+cr$+cr$:sysa(1):o$="{yel}Handle:"+cr$+"{wht}"+un$+cr$:sysa(1)
  1341 o$=cr$+"{yel}Password:"+cr$+"{wht}"+pw$+cr$:sysa(1)
  1342 o$=cr$+"{yel}Real name:"+cr$+"{wht}"+rn$+cr$:sysa(1)
@@ -334,7 +344,7 @@
  3380 a(3)=1335
  3385 a(4)=1452
  3390 sd=0:rs=37136:cr$=chr$(13):iz=0:cd=0:mc=20:ma=0:rt=38912:qr=40960
- 3391 dim tl(6):tl(1)=20:tl(2)=30:tl(3)=60:tl(4)=60:tl(5)=90:tl(6)=90:em=0:ad=0
+ 3391 dim tl(6):tl(1)=20:tl(2)=30:tl(3)=60:tl(4)=60:tl(5)=90:tl(6)=90:em=0:ad=0:ww=0
  3399 return
  3400 rem * get date *
  3410 pokert,8:v=peek(rt+1):gosub3490:v$=str$(v):da$=right$(v$,len(v$)-1)+"/"
@@ -480,14 +490,15 @@
  5000 rem * editor   *
  5001 o$="{clr}New Message"+cr$+cr$:sysa(1):o$="Subject?"+cr$+">":sysa(1):poke254,1:mc=18
  5002 gosub400:ifi$=""then5099
- 5003 su$=i$:o$=cr$+"Hang on..."+cr$:sysa(1):gosub3400:qx=0
+ 5003 su$=i$:o$=cr$+"Hang on..."+cr$:sysa(1):gosub3400:qx=0:ww=1
  5004 mm$=str$(nm+1):mm$=right$(mm$,len(mm$)-1):o$="Message #"+mm$:gosub5100
  5005 o$="From:"+un$+cr$+"Date:"+da$+cr$+"Subject:"+cr$+su$:gosub5100
- 5009 o$="{clr}EDITOR"+cr$+cr$+"Start typing."+cr$+"No Word Wrap."+cr$+"Type /s to send!"
- 5010 sysa(1):o$=cr$+"Type /a to abort."+cr$+cr$ :sysa(1)
- 5013 o$="{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}"+cr$:gosub5100:sysa(1):mc=21
+ 5009 o$="{clr}EDITOR"+cr$+cr$+"Start typing."+cr$+"Word Wrap:ON."+cr$+"Type /? for help!"
+ 5010 o$=o$+cr$:sysa(1)
+ 5013 o$="{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}{CBM-T}":gosub5100:sysa(1):mc=21
  5015 gosub400:ifi$="/s"then5020
  5016 ifi$="/a"then5090
+ 5017 ifi$="/e"ori$="/l"ori$="/p"ori$="/w"ori$="/d"ori$="/?"then5200
  5018 ifcd=0then5090
  5019 o$=i$:gosub5100:goto5015
  5020 nm=nm+1:o$=cr$+"Saving..."+cr$:sysa(1):open15,8,15
@@ -498,7 +509,7 @@
  5045 gosub 1800
  5050 goto 5099
  5090 o$=cr$+"Aborted!"+cr$:sysa(1):mc=0
- 5099 return
+ 5099 ww=0:return
  5100 rem * hi ram  *
  5105 o$=o$+cr$
  5110 fork=1tolen(o$)
@@ -507,6 +518,93 @@
  5140 nextk
  5149 return
  5199 return
+ 5200 rem * editor exp
+ 5210 ifi$="/e"thengosub5300
+ 5220 ifi$="/l"thengosub5400
+ 5230 ifi$="/p"thengosub5500
+ 5240 ifi$="/w"thengosub5600
+ 5250 ifi$="/d"thengosub5700
+ 5260 ifi$="/?"thengosub5800
+ 5299 goto5015
+ 5300 rem * edit line
+ 5302 w1=ww:ww=0
+ 5305 o$=cr$+"Line # to edit? >":sysa(1):mc=4:poke254,1:gosub400:ifi$=""then5398
+ 5310 ifval(i$)<1orval(i$)>1000then5398
+ 5315 o$=cr$+"Searching...":sysa(1):ln=1:q1=0:q2=0:k=qr:z=val(i$)+6
+ 5320 ifln=zandk<qr+qxthen5350
+ 5325 ifchr$(peek(k))=cr$thenln=ln+1
+ 5330 k=k+1:ifk>qr+qxthen5397
+ 5335 goto5320
+ 5350 q1=k:el$=""
+ 5355 z$=chr$(peek(k)):ifz$=cr$then5360
+ 5356 el$=el$+z$
+ 5358 k=k+1:ifk>qr+qxthen5397
+ 5359 goto5355
+ 5360 q2=k:o$=cr$+cr$+"Original Line:"+cr$+">"+el$+cr$:sysa(1)
+ 5365 o$=cr$+"Enter New Line:"+cr$+">":sysa(1):mc=21:poke254,1
+ 5366 gosub400:ifi$=""then5398
+ 5367 o$=cr$+"Working...":sysa(1)
+ 5368 df=len(i$)-len(el$)
+ 5370 ifdf<0thenforw=q2toqr+qx:pokew+df,peek(w):nextw
+ 5372 ifdf>0thenforw=qr+qxtoq2step-1:pokew+df,peek(w):nextw
+ 5375 qx=qx+df
+ 5380 i$=i$+cr$:forw=1tolen(i$):pokew-1+q1,asc(mid$(i$,w,1)+chr$(0)):nextw
+ 5385 o$=cr$+"Replaced!"+cr$:sysa(1):gosub1800:goto5398
+ 5397 o$=cr$+"{rvon}NOT{$a0}FOUND.{rvof}"+cr$:sysa(1):gosub1800
+ 5398 gosub5500
+ 5399 ww=w1:mc=21:return
+ 5400 rem * list msg
+ 5410 o$="{clr}":sysa(1)
+ 5415 o$="":ln=1
+ 5420 fork=qrtoqr+qx
+ 5430 z$=chr$(peek(k))
+ 5440 o$=o$+z$
+ 5450 ifz$=cr$andln>6theno$=cr$+str$(ln-6)+":"+cr$+o$:sysa(1):o$="":ln=ln+1
+ 5455 ifz$=cr$andln<=6thensysa(1):o$="":ln=ln+1
+ 5460 nextk
+ 5499 return
+ 5500 rem * preview
+ 5510 o$="{clr}":sysa(1)
+ 5515 o$=""
+ 5520 fork=qrtoqr+qx
+ 5530 z$=chr$(peek(k))
+ 5540 o$=o$+z$
+ 5550 ifz$=cr$thensysa(1):o$=""
+ 5560 nextk
+ 5599 return
+ 5600 rem * toggle ww
+ 5610 ifww=0thenww=1:o$="{rvon}WORD{$a0}WRAP:ON{rvof}"+cr$:sysa(1):goto5699
+ 5620 ifww=1thenww=0:o$="{rvon}WORD WRAP:OFF{rvof}"+cr$:sysa(1):goto5699
+ 5699 return
+ 5700 rem * del line
+ 5702 w1=ww:ww=0
+ 5705 o$=cr$+"Line # to delete? >":sysa(1):mc=4:poke254,1:gosub400:ifi$=""then5798
+ 5710 ifval(i$)<1orval(i$)>1000then5798
+ 5715 o$=cr$+"Searching...":sysa(1):ln=1:q1=0:q2=0:k=qr:z=val(i$)+6
+ 5720 ifln=zandk<qr+qxthen5750
+ 5725 ifchr$(peek(k))=cr$thenln=ln+1
+ 5730 k=k+1:ifk>qr+qxthen5797
+ 5735 goto5720
+ 5750 q1=k:el$=""
+ 5755 z$=chr$(peek(k)):ifz$=cr$then5760
+ 5756 el$=el$+z$
+ 5758 k=k+1:ifk>qr+qxthen5797
+ 5759 goto5755
+ 5760 q2=k:o$=cr$+cr$+"Delete Line:"+cr$+">"+el$+cr$:sysa(1)
+ 5765 gosub1850:ifa$<>"y"then5798
+ 5767 o$=cr$+"Working...":sysa(1)
+ 5768 df=len(el$)+1
+ 5770 forw=q2toqr+qx:pokew-df,peek(w):nextw
+ 5775 qx=qx-df
+ 5780 rem
+ 5785 o$=cr$+"Deleted!"+cr$:sysa(1):gosub1800:goto5798
+ 5797 o$=cr$+"{rvon}NOT{$a0}FOUND.{rvof}"+cr$:sysa(1):gosub1800
+ 5798 gosub5500
+ 5799 ww=w1:mc=21:return
+ 5800 rem * edit help
+ 5810 o$="/s=save, /e=edit,"+cr$+"/l=list, /p=preview,"+cr$+"/w=wrap, /a=abort,"+cr$
+ 5820 sysa(1)
+ 5899 return
  6000 rem * sysop menu
  6001 ifval(sl$)<4then6099
  6005 o$=cr$+"Sysop:":sysa(1):poke254,1:sysa(3):a$=chr$(peek(780)):o$=a$+cr$:sysa(1)
