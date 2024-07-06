@@ -7,6 +7,9 @@ This is a bulletin board system (BBS) that runs on a Commodore VIC-20 personal c
 - a WiFi modem such as Strikelink (or some other method to connect ie: null modem to tcpser server)
 - storage device (ie: 1541 disk drive, SD2IEC drive or pi1541 drive)
 
+## Live Wire BBS
+You can try it out by firing up your VIC-20 connected with a WiFi Modem and visiting my actual BBS running at: `vic-bbs.com:6502`
+
 ## Quick Start
 - Download the latest appropriate D64 image from this repo (BBS.d64 is for a physical VIC-20, BBS-VICE.d64 is for a VICE-emulated VIC-20)
 - If using emulation, load the D64 image in VICE, configure VICE's RS232 parameters, and ensure tcpser is running with the correct parameters.
