@@ -73,17 +73,18 @@
   380 gosub 1800
   399 return
   400 rem * main i/o  *
-  401 i$="":iflen(fu$)>0theni$=fu$:fu$="":o$=cr$+i$:sysa(1)
+  401 i$="":np=0:iflen(fu$)>0theni$=fu$:fu$="":o$=cr$+i$:sysa(1)
   405 sysa(3):x=peek(780):ifx>0thena$=chr$(x)
+  406 np=np+peek(781)
   410 ifx=13theno$=cr$:sysa(1):goto499
   411 ifx=20thengosub1500:goto405
   412 ifx=255thencd=0:goto499
-  415 iflen(i$)=mcandww=0then405
+  415 iflen(i$)=mc+npandww=0then405
   420 i$=i$+a$
   425 ifma=1theno$="*"
   430 ifma=0theno$=a$
   435 sysa(1)
-  436 iflen(i$)>=mcandww=1then440
+  436 iflen(i$)>=mc+npandww=1then440
   439 goto405
   440 rem * word wrap
   445 j=len(i$):ifj=0then499
@@ -209,8 +210,13 @@
  1495 cd=0
  1499 return
  1500 rem * del char *
+ 1505 sd=0
  1510 iflen(i$)<1then1599
+ 1512 n=asc(right$(i$,1)+chr$(0))
+ 1513 ifn=5orn=18orn=28orn=30orn=31orn=146orn=156orn=158orn=159thennp=np-1:sd=1
+ 1514 ifnp<0thennp=0
  1520 i$=left$(i$,len(i$)-1)
+ 1525 ifsd=1then1599
  1530 o$=chr$(20)
  1540 sysa(1)
  1599 return
@@ -342,8 +348,8 @@
  3360 a(1)=1048
  3370 a(2)=1078
  3380 a(3)=1335
- 3385 a(4)=1452
- 3390 sd=0:rs=37136:cr$=chr$(13):iz=0:cd=0:mc=20:ma=0:rt=38912:qr=40960
+ 3385 a(4)=1504
+ 3390 sd=0:rs=37136:cr$=chr$(13):iz=0:cd=0:mc=20:ma=0:rt=38912:qr=40960:np=0
  3391 dim tl(6):tl(1)=20:tl(2)=30:tl(3)=60:tl(4)=60:tl(5)=90:tl(6)=90:em=0:ad=0:ww=0
  3399 return
  3400 rem * get date *
