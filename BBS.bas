@@ -26,6 +26,7 @@
   107 print"{down}Waiting..."
   108 print"{down}(Press {rvon} F1 {rvof} to exit)"
   110 geta$:ifa$="{f1}"thensd=1:goto199
+  112 ifa$=" "thenprint"{wht}":goto100
   115 if(peek(rs)and16)=0then110
   120 fort=1to255:get#5,z$:nextt:cd=1
   130 o$=cr$+"Press RETURN:":sysa(1)
