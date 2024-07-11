@@ -1,6 +1,6 @@
     0 rem *** vic-bbs ***
     1 open5,2,0,chr$(8)
-    2 poke36879,8:print"{cyn}";chr$(14);
+    2 poke36879,8:print"{red}";chr$(14);
     3 f$="":a$="":o$=""
     4 gosub3300:gosub3000
     5 rem ***************
@@ -9,9 +9,9 @@
     8 rem *             *
     9 rem ***************
    10 gosub 100:ifsd=1thengoto99
-   11 ifcd=0thengosub1400:run
+   11 ifcd=0then98
    20 gosub 1000
-   30 gosub 200:ifcd=0thengosub1400:close5:run
+   30 gosub 200:ifcd=0then98
    40 gosub 1200
    50 gosub 2000
    98 gosub1400:close5:run
@@ -102,7 +102,7 @@
   600 rem * logoff    *
   610 o$=cr$+"LOGOFF"+cr$:sysa(1):gosub1850
   620 ifa$=chr$(255)thencd=0
-  630 ifa$="y"thenf$="logoff,s,r":sysa(2):nc=nc+1:cd=0:lc$=un$
+  630 ifa$="y"thenf$="logoff,s,r":sysa(2):cd=0
   699 return
   700 rem * pause     *
   710 fort=1to666:next
@@ -117,7 +117,7 @@
   800 rem * printline *
   899 return
   900 rem * debug     *
-  910 o$="{clr}DEBUG{$a0}SCREEN"+cr$+cr$
+  910 o$="{clr}{wht}DEBUG{$a0}SCREEN"+cr$+cr$
   911 o$="UN$= "+un$+cr$:sysa(1)
   912 o$="ID ="+str$(id)+cr$:sysa(1)
   913 o$="SL$= "+sl$+cr$:sysa(1)
@@ -195,6 +195,7 @@
  1395 ad=0:gosub3450:tu=tm+tl(val(sl$))*60:iftu>86400thentu=tu-86400:ad=1
  1399 return
  1400 rem * hang up  *
+ 1405 nc=nc+1:iflen(un$)>0thenlc$=un$
  1410 gosub700
  1420 poke rs,151
  1430 gosub700
@@ -210,13 +211,13 @@
  1495 cd=0
  1499 return
  1500 rem * del char *
- 1505 sd=0
+ 1505 cc=0
  1510 iflen(i$)<1then1599
  1512 n=asc(right$(i$,1)+chr$(0))
- 1513 ifn=5orn=18orn=28orn=30orn=31orn=146orn=156orn=158orn=159thennp=np-1:sd=1
+ 1513 ifn=5orn=18orn=28orn=30orn=31orn=146orn=156orn=158orn=159thennp=np-1:cc=1
  1514 ifnp<0thennp=0
  1520 i$=left$(i$,len(i$)-1)
- 1525 ifsd=1then1599
+ 1525 ifcc=1then1599
  1530 o$=chr$(20)
  1540 sysa(1)
  1599 return
@@ -269,7 +270,7 @@
  1990 close1:close15
  1999 return
  2000 rem * main mnu *
- 2001 o$=cr$+"Command:":sysa(1):poke254,1:sysa(3):a$=chr$(peek(780)):o$=a$+cr$:sysa(1)
+ 2001 o$=cr$+"{wht}Command:":sysa(1):poke254,1:sysa(3):a$=chr$(peek(780)):o$=a$+cr$:sysa(1)
  2002 ifa$=">"thengosub900:goto2001
  2003 gosub3450:iftm>tuandad=0thenf$="timeup,s,r":sysa(2):cd=0:goto2099
  2004 ifa$="t"ora$="T"thengosub1700:goto2001
@@ -341,7 +342,10 @@
  3310 print"{clr}Loading ML..."
  3320 open3,8,3,"bbs.ml,p,r"
  3325 get#3,h1$:get#3,h2$
- 3330 fort=1024to1510:get#3,v$:poket,asc(v$+chr$(0)):nextt
+ 3330 t=1024
+ 3331 get#3,v$:poket,asc(v$+chr$(0))
+ 3332 ifst<>0thenclose3:goto3350
+ 3333 t=t+1:goto3331
  3340 close3
  3350 dim a(4)
  3355 poke254,0
@@ -388,7 +392,7 @@
  3599 return
  4000 rem * bulletins
  4010 f$="bulletins,s,r":sysa(2)
- 4015 o$="Bulletin:":sysa(1):poke254,1:sysa(3):a$=chr$(peek(780)):o$=a$+cr$:sysa(1)
+ 4015 o$="{wht}Bulletin:":sysa(1):poke254,1:sysa(3):a$=chr$(peek(780)):o$=a$+cr$:sysa(1)
  4016 bl=val(a$)
  4017 gosub3450:iftm>tuandad=0thenf$="timeup,s,r":sysa(2):cd=0:goto4099
  4020 ifa$="x"ora$="X"then4099
@@ -398,9 +402,9 @@
  4098 o$=cr$+"Press ? for List!"+cr$:sysa(1):goto4015
  4099 return
  4100 rem * read msgs
- 4101 ifval(sl$)<2theno$=cr$+"Sorry, access denied!"+cr$:sysa(1):goto4199
+ 4101 ifval(sl$)<2theno$=cr$+"{wht}Sorry, access denied!"+cr$:sysa(1):goto4199
  4102 lm=nm-255:iflm<1thenlm=1
- 4103 o$=cr$+"{clr}Read Messages"+cr$+cr$:sysa(1):nr=val(ur$)
+ 4103 o$=cr$+"{clr}{wht}Read Messages"+cr$+cr$:sysa(1):nr=val(ur$)
  4105 o$=cr$+"{rvon}RETURN{rvof} - Next{$a0}Msg"+cr$+"{rvon}P{rvof} - Previous Msg"+cr$+"{rvon}#{rvof} - Enter Msg #"+cr$
  4106 sysa(1):o$="{rvon}A{rvof} - Read Again"+cr$+"{rvon}R{rvof} - Reply"+cr$:sysa(1)
  4108 o$="{rvon}X{rvof} - Exit Messages"+cr$:sysa(1)
@@ -436,7 +440,7 @@
  4189 gosub5003:goto4110
  4199 return
  4200 rem * post msg
- 4201 ifval(sl$)<3theno$=cr$+"Sorry, access denied!"+cr$:sysa(1):goto4299
+ 4201 ifval(sl$)<3theno$=cr$+"{wht}Sorry, access denied!"+cr$:sysa(1):goto4299
  4250 gosub5000
  4299 return
  4300 rem * list files
@@ -453,7 +457,7 @@
  4699 return
  4700 rem * settings
  4710 f$="setmenu,s,r":sysa(2)
- 4715 o$="Setting:":sysa(1):poke254,1:sysa(3):a$=chr$(peek(780)):o$=a$+cr$:sysa(1)
+ 4715 o$="{wht}Setting:":sysa(1):poke254,1:sysa(3):a$=chr$(peek(780)):o$=a$+cr$:sysa(1)
  4717 gosub3450:iftm>tuandad=0thenf$="timeup,s,r":sysa(2):cd=0:goto4799
  4720 ifa$="h"ora$="H"thenf$="syshelp,s,r":sysa(2):gosub1800:goto4710
  4725 ifa$="p"ora$="P"thengosub4900:goto4710
@@ -476,9 +480,9 @@
  4860 o$=cr$+"Exiting chat..."+cr$:sysa(1)
  4899 return
  4900 rem * chg pswd
- 4910 o$="{clr}Change{$a0}Password"+cr$+cr$:sysa(1)
+ 4910 o$="{clr}{wht}Change{$a0}Password"+cr$+cr$:sysa(1)
  4915 o$="Current Password:"+cr$+">"+pw$+cr$+cr$:sysa(1)
- 4920 o$="Enter NEW{$a0}Password"+cr$+"or leave blank to"+cr$+"abort."+cr$+">":sysa(1)
+ 4920 o$="{yel}Enter NEW{$a0}Password"+cr$+"or leave blank to"+cr$+"abort."+cr$+">":sysa(1)
  4925 mc=10:poke254,1:gosub400:o$=cr$:sysa(1):gosub1600
  4926 ifi$=""then4999
  4930 o$=cr$+i$+cr$:sysa(1):gosub1850:ifa$<>"y"then4999
@@ -486,15 +490,15 @@
  4940 open15,8,15:open1,8,2,"users,l,"+chr$(76)
  4945 print#15,"p"+chr$(98)+chr$(id)+chr$(0)+chr$(1):gosub500
  4950 rc$=left$(rc$,12)+np$+right$(rc$,52)
- 4955 iflen(rc$)<>74theno$=cr$+cr$+"{rvon}LEN{$a0}ERROR!{rvof}"+cr$+"["+rc$+"]"+cr$:sysa(1):goto4998
+ 4955 iflen(rc$)<>74theno$=cr$+cr$+"{rvon}{red}LEN{$a0}ERROR!{rvof}{wht}"+cr$+"["+rc$+"]"+cr$:sysa(1):goto4998
  4960 print#15,"p"+chr$(98)+chr$(id)+chr$(0)+chr$(1)
  4965 print#1,rc$
- 4970 input#15,e,e$:o$=cr$+"Status:"+e$+cr$:sysa(1)
+ 4970 input#15,e,e$:o$=cr$+"{wht}Status:"+e$+cr$:sysa(1)
  4975 pw$=np$
  4998 close1:close15:gosub1800
  4999 return
  5000 rem * editor   *
- 5001 o$="{clr}New Message"+cr$+cr$:sysa(1):o$="Subject?"+cr$+">":sysa(1):poke254,1:mc=18
+ 5001 o$="{clr}{wht}New Message"+cr$+cr$:sysa(1):o$="Subject?"+cr$+">":sysa(1):poke254,1:mc=18
  5002 gosub400:ifi$=""then5099
  5003 su$=i$:o$=cr$+"Hang on..."+cr$:sysa(1):gosub3400:qx=0:ww=1
  5004 mm$=str$(nm+1):mm$=right$(mm$,len(mm$)-1):o$="Message #"+mm$:gosub5100
@@ -613,7 +617,7 @@
  5899 return
  6000 rem * sysop menu
  6001 ifval(sl$)<4then6099
- 6005 o$=cr$+"Sysop:":sysa(1):poke254,1:sysa(3):a$=chr$(peek(780)):o$=a$+cr$:sysa(1)
+ 6005 o$=cr$+"{wht}Sysop:":sysa(1):poke254,1:sysa(3):a$=chr$(peek(780)):o$=a$+cr$:sysa(1)
  6006 ifcd=0then6099
  6010 ifa$="e"ora$="E"thengosub6200:goto6005
  6096 ifa$="x"ora$="X"then6099
